@@ -1,17 +1,33 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import MyContext from './PlanetsContext';
+import PlanetsContext from './PlanetsContext';
 
-const INITIAL_STATE = { nome: 'Xablau', idade: 100 };
+class PlanetsProvider extends React.Component {
+  state = {
+    data: [],
+    tableItems: [],
+  };
 
-function PlanetsProvider({ children }) {
-  const [state, setState] = useState(INITIAL_STATE);
+  getPlanetsData = () => {
+    fetch('https://swapi-trybe.herokuapp.com/api/planets/')
+      .then((response) => response.json())
+      .then((response) => {
+        response.results.map((data) => delete data.residents);
+        this.setState({ data: response.results });
+        this.setState({ tableItems: Object.keys(response.results[0]) });
+      });
+  }
 
-  return (
-    <MyContext.Provider value={ state }>
-      {children}
-    </MyContext.Provider>
-  );
+  render() {
+    const { children } = this.props;
+    return (
+      <PlanetsContext.Provider
+        value={ { ...this.state, getPlanetsData: this.getPlanetsData } }
+      >
+        {children}
+      </PlanetsContext.Provider>
+    );
+  }
 }
 
 PlanetsProvider.propTypes = {

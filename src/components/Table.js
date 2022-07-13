@@ -4,8 +4,7 @@ import PlanetsContext from '../context/PlanetsContext';
 function Table() {
   const { data,
     getPlanetsData,
-    tableHeaders,
-    handleFilterPlanets } = useContext(PlanetsContext);
+    tableHeaders } = useContext(PlanetsContext);
 
   useEffect(() => {
     getPlanetsData();
@@ -13,11 +12,6 @@ function Table() {
 
   return (
     <div>
-      <input
-        data-testid="name-filter"
-        placeholder="Search"
-        onChange={ handleFilterPlanets }
-      />
       <table>
         <thead>
           <tr>

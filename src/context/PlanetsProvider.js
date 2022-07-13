@@ -10,6 +10,11 @@ class PlanetsProvider extends React.Component {
     filterByName: {
       name: '',
     },
+    columns: [
+      'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+    ],
+    range: ['maior que', 'menor que', 'igual a'],
+    inputByNumber: [],
   };
 
   getPlanetsData = () => {

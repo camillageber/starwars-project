@@ -2,7 +2,10 @@ import React, { useContext, useEffect } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Table() {
-  const { data, getPlanetsData, tableItems } = useContext(PlanetsContext);
+  const { data,
+    getPlanetsData,
+    tableHeaders,
+    handleFilterPlanets } = useContext(PlanetsContext);
 
   useEffect(() => {
     getPlanetsData();
@@ -10,11 +13,16 @@ function Table() {
 
   return (
     <div>
+      <input
+        data-testid="name-filter"
+        placeholder="Search"
+        onChange={ handleFilterPlanets }
+      />
       <table>
         <thead>
           <tr>
             {
-              tableItems.map((key, index) => (
+              tableHeaders.map((key, index) => (
                 <th key={ index }>{ key }</th>
               ))
             }
@@ -22,7 +30,7 @@ function Table() {
           <tbody>
             {data.map((planet, index) => (
               <tr key={ index }>
-                {tableItems.map((el, i) => (
+                {tableHeaders.map((el, i) => (
                   <td key={ i }>{ planet[el] }</td>
                 ))}
               </tr>

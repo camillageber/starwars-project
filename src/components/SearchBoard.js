@@ -1,12 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 function SearchBoard() {
-  const { handleFilterPlanets, getPlanetsData } = useContext(PlanetsContext);
-
-  useEffect(() => {
-    getPlanetsData();
-  }, []);
+  const { handleFilterPlanets } = useContext(PlanetsContext);
 
   return (
     <div>

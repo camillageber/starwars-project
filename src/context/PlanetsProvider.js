@@ -6,10 +6,12 @@ function PlanetsProvider({ children }) {
   const [dataPlanets, setDataPlanets] = useState([]);
   const [cloneData, setCloneData] = useState([]);
   const [filterName, setFilterName] = useState('');
+  const [filterByNumericsValues, setFilterByNumericsValues] = useState([]);
 
   function handleFilterPlanets({ target }) {
     const { value } = target;
-    const planetFiltered = cloneData.filter((planet) => planet.name.includes(value));
+    const planetFiltered = cloneData.filter((planet) => (
+      planet.name.toLowerCase().includes(value.toLowerCase())));
     setDataPlanets(planetFiltered);
     setFilterName({ value });
   }
@@ -24,6 +26,8 @@ function PlanetsProvider({ children }) {
     },
     cloneData,
     handleFilterPlanets,
+    filterByNumericsValues,
+    setFilterByNumericsValues,
   };
 
   const fetchPlanetsData = async () => {
@@ -36,6 +40,7 @@ function PlanetsProvider({ children }) {
     const cloneResult = dataApi.results;
     setDataPlanets(result);
     setCloneData(cloneResult);
+    setFilterByNumericsValues(result);
   };
 
   useEffect(() => {

@@ -2,11 +2,12 @@ import React, { useState, useContext, useEffect } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 function NumericsFilter() {
-  const { filterByNumericsValues, setDataPlanets,
-    dataPlanets } = useContext(PlanetsContext);
+  const { setCloneData, data } = useContext(PlanetsContext);
+  // filterByNumericsValues, setDataPlanets, dataPlanets
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [numericValue, setNumericValue] = useState(0);
+  const [filterByNumericsValues, setFilterByNumericsValues] = useState([]);
 
   const comparisonArray = ['maior que', 'menor que', 'igual a'];
 
@@ -24,26 +25,44 @@ function NumericsFilter() {
   };
 
   const handleFilterClick = () => {
-    switch (comparison) {
-    case (comparisonArray[0]): {
-      const maiorQue = filterByNumericsValues
-        .filter((planet) => planet[column] > Number(numericValue));
-      return setDataPlanets(maiorQue); }
-    case (comparisonArray[1]): {
-      const menorQue = filterByNumericsValues
-        .filter((planet) => planet[column] < Number(numericValue));
-      return setDataPlanets(menorQue); }
-    case (comparisonArray[2]): {
-      const igual = filterByNumericsValues
-        .filter((planet) => planet[column] === numericValue);
-      return setDataPlanets(igual); }
-    default:
-      console.log(error);
-    }
+    let response = [...data];
+    filterByNumericsValues.forEach((obj) => {
+      switch (obj.comparison) {
+      case (comparisonArray[0]): {
+        response = response
+          .filter((planet) => Number(planet[obj.column]) > Number(obj.numericValue));
+        break;
+      }
+      case (comparisonArray[1]): {
+        response = response
+          .filter((planet) => Number(planet[obj.column]) < Number(obj.numericValue));
+        break;
+      }
+      case (comparisonArray[2]): {
+        response = response
+          .filter((planet) => Number(planet[obj.column]) === Number(obj.numericValue));
+        break;
+      }
+      default:
+        response = data;
+      }
+    });
+    setCloneData(response);
   };
+
+  const addFilter = () => {
+    const objFilter = {
+      column,
+      comparison,
+      numericValue,
+    };
+    setFilterByNumericsValues([...filterByNumericsValues, objFilter]);
+  };
+
   useEffect(() => {
     handleFilterClick();
-  }, [dataPlanets]);
+    console.log('olá');
+  }, [filterByNumericsValues]);
 
   return (
     <div>
@@ -83,7 +102,7 @@ function NumericsFilter() {
         type="button"
         data-testid="button-filter"
         value="Filtrar"
-        onClick={ handleFilterClick }
+        onClick={ addFilter }
       >
         Filtrar
       </button>

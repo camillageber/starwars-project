@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Table() {
-  const { data } = useContext(PlanetsContext);
+  const { cloneData } = useContext(PlanetsContext);
   return (
     <div>
       <table>
@@ -25,7 +25,7 @@ function Table() {
         </thead>
         <tbody>
           {
-            data.map((planet) => (
+            cloneData.map((planet) => (
               <tr key={ planet.name }>
                 <td>{planet.name}</td>
                 <td>{planet.rotation_period}</td>

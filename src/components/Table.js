@@ -3,6 +3,7 @@ import PlanetsContext from '../context/PlanetsContext';
 
 function Table() {
   const { cloneData } = useContext(PlanetsContext);
+
   return (
     <div>
       <table>

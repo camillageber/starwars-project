@@ -23,6 +23,10 @@ function NumericsFilter() {
       return console.log('error!');
     }
   };
+  const optionsArray = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+
+  const [options, setOptions] = useState(optionsArray);
 
   const handleFilterClick = () => {
     let response = [...data];
@@ -50,7 +54,13 @@ function NumericsFilter() {
     setCloneData(response);
   };
 
+  useEffect(() => {
+    setColumn(options[0]);
+  }, [options]);
+
   const addFilter = () => {
+    const filterMulti = options.filter((option) => option !== column);
+    setOptions(filterMulti);
     const objFilter = {
       column,
       comparison,
@@ -58,7 +68,8 @@ function NumericsFilter() {
     };
     setFilterByNumericsValues([...filterByNumericsValues, objFilter]);
   };
-
+  // ajuda para resolver o requisito 4 do André Horman na sala da monitoria
+  // ajuda para construir o requisito 6 do colega Carlos Daniel na sala de estudos.
   useEffect(() => {
     handleFilterClick();
     console.log('olá');
@@ -72,12 +83,7 @@ function NumericsFilter() {
         onChange={ handleFilterChange }
         value={ column }
       >
-        <option>population</option>
-        <option>orbital_period</option>
-        <option>diameter</option>
-        <option>rotation_period</option>
-        <option>surface_water</option>
-
+        { options.map((option) => <option key={ option }>{ option }</option>) }
       </select>
       <select
         name="comparisonFilter"

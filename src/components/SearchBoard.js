@@ -8,6 +8,7 @@ function SearchBoard() {
   return (
     <div>
       <input
+        type="text"
         data-testid="name-filter"
         placeholder="Pesquise"
         onChange={ handleFilterPlanets }

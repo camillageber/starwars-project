@@ -15,16 +15,27 @@ function NumericsFilter() {
 
   const comparisonArray = ['maior que', 'menor que', 'igual a'];
 
+  // const handleFilterChange = ({ target }) => {
+  //   switch (target.name) {
+  //   case ('filterOptions'):
+  //     return setColumn1(target.value);
+  //   case ('comparisonFilter'):
+  //     return setComparison(target.value);
+  //   case ('value-filter'):
+  //     return setNumericValue(target.value);
+  //   default:
+  //     return console.log('error!');
+  //   }
+  // };
+
   const handleFilterChange = ({ target }) => {
     switch (target.name) {
     case ('filterOptions'):
       return setColumn1(target.value);
     case ('comparisonFilter'):
       return setComparison(target.value);
-    case ('value-filter'):
-      return setNumericValue(target.value);
     default:
-      return console.log('error!');
+      return setNumericValue(target.value);
     }
   };
   const optionsArray = [

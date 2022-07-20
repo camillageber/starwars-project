@@ -116,5 +116,82 @@ test('Verifica a filtragem das options de coluna por ordenação Ascendente ou D
   const planetDesc = await screen.findByText('Coruscant')
   expect(planetDesc).toBeInTheDocument();
 })
+
+test('Verifica a filtragem 2', async () => {
+  jest.spyOn(global, 'fetch').mockResolvedValue({
+    json: jest.fn().mockResolvedValue({ results: mockAPI }),
+  });
+
+  render(<App />)
+
+  const inputColumn1 = screen.getByTestId('column-filter');
+  const inputComparison = screen.getByTestId('comparison-filter');
+  const inputValue = screen.getByTestId('value-filter');
+  const buttonFilter = screen.getByTestId('button-filter');
+
+  userEvent.selectOptions(inputColumn1, ['population']);
+  userEvent.selectOptions(inputComparison, ['maior que']);
+  userEvent.clear(inputValue);
+  userEvent.type(inputValue, '200000');
+  userEvent.click(buttonFilter);
+
+  const planet4 = await screen.findByText('Bespin')
+  expect(planet4).toBeInTheDocument();
+
+  expect(screen.getAllByRole('row').length).toBe(11);
+
+  const inputColumn = screen.getByTestId('column-sort');
+  const radioASC = screen.getByTestId('column-sort-input-asc');
+  const buttonSort = screen.getByTestId('column-sort-button');
+
+  // testa as opções de filtragem Ascendente
+  userEvent.selectOptions(inputColumn, ['population']);
+  userEvent.click(radioASC);
+  userEvent.click(buttonSort);
+
+  const planetAsc = await screen.findByText('Coruscant')
+  expect(planetAsc).toBeInTheDocument();
+
+  expect(screen.getAllByRole('row').length).toBe(11);
+
+})
+
+test('Verifica a filtragem 3', async () => {
+  jest.spyOn(global, 'fetch').mockResolvedValue({
+    json: jest.fn().mockResolvedValue({ results: mockAPI }),
+  });
+
+  render(<App />)
+
+  const inputColumn1 = screen.getByTestId('column-filter');
+  const inputComparison = screen.getByTestId('comparison-filter');
+  const inputValue = screen.getByTestId('value-filter');
+  const buttonFilter = screen.getByTestId('button-filter');
+
+  userEvent.selectOptions(inputColumn1, ['orbital_period']);
+  userEvent.selectOptions(inputComparison, ['menor que']);
+  userEvent.clear(inputValue);
+  userEvent.type(inputValue, '400');
+  userEvent.click(buttonFilter);
+
+  const planet4 = await screen.findByText('Alderaan')
+  expect(planet4).toBeInTheDocument();
+
+  expect(screen.getAllByRole('row').length).toBe(11);
+
+  const inputColumn = screen.getByTestId('column-sort');
+  const radioDESC = screen.getByTestId('column-sort-input-desc');
+  const buttonSort = screen.getByTestId('column-sort-button');
+
+
+// testa as opções de filtragem Descendente
+  userEvent.selectOptions(inputColumn, ['orbital_period']);
+  userEvent.click(radioDESC);
+  userEvent.click(buttonSort);
+
+  const planetDesc = await screen.findByText('Coruscant')
+  expect(planetDesc).toBeInTheDocument();
+  expect(screen.getAllByRole('row').length).toBe(11);
+})
   // fonte: https://github.com/testing-library/user-event/issues/358
 })

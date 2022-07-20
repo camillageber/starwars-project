@@ -1,4 +1,11 @@
-/* eslint-disable sonarjs/no-duplicate-string */
+const ONE_STANDARD = '1 standard';
+const FILMS_ONE = 'https://swapi-trybe.herokuapp.com/api/films/1/';
+const FILMS_TWO = 'https://swapi-trybe.herokuapp.com/api/films/3/';
+const FILMS_THREE = 'https://swapi-trybe.herokuapp.com/api/films/4/';
+const FILMS_FOUR = 'https://swapi-trybe.herokuapp.com/api/films/5/';
+const FILMS_FIVE = 'https://swapi-trybe.herokuapp.com/api/films/6/';
+const FILMS_SIX = 'https://swapi-trybe.herokuapp.com/api/films/2/';
+
 const mockAPI = [
   {
     name: 'Tatooine',
@@ -6,7 +13,7 @@ const mockAPI = [
     orbital_period: '304',
     diameter: '10465',
     climate: 'arid',
-    gravity: '1 standard',
+    gravity: ONE_STANDARD,
     terrain: 'desert',
     surface_water: '1',
     population: '200000',
@@ -23,11 +30,11 @@ const mockAPI = [
       'https://swapi-trybe.herokuapp.com/api/people/62/',
     ],
     films: [
-      'https://swapi-trybe.herokuapp.com/api/films/1/',
-      'https://swapi-trybe.herokuapp.com/api/films/3/',
-      'https://swapi-trybe.herokuapp.com/api/films/4/',
-      'https://swapi-trybe.herokuapp.com/api/films/5/',
-      'https://swapi-trybe.herokuapp.com/api/films/6/',
+      FILMS_ONE,
+      FILMS_TWO,
+      FILMS_THREE,
+      FILMS_FOUR,
+      FILMS_FIVE,
     ],
     created: '2014-12-09T13:50:49.641000Z',
     edited: '2014-12-20T20:58:18.411000Z',
@@ -39,7 +46,7 @@ const mockAPI = [
     orbital_period: '364',
     diameter: '12500',
     climate: 'temperate',
-    gravity: '1 standard',
+    gravity: ONE_STANDARD,
     terrain: 'grasslands, mountains',
     surface_water: '40',
     population: '2000000000',
@@ -49,8 +56,8 @@ const mockAPI = [
       'https://swapi-trybe.herokuapp.com/api/people/81/',
     ],
     films: [
-      'https://swapi-trybe.herokuapp.com/api/films/1/',
-      'https://swapi-trybe.herokuapp.com/api/films/6/',
+      FILMS_ONE,
+      FILMS_FIVE,
     ],
     created: '2014-12-10T11:35:48.479000Z',
     edited: '2014-12-20T20:58:18.420000Z',
@@ -62,13 +69,13 @@ const mockAPI = [
     orbital_period: '4818',
     diameter: '10200',
     climate: 'temperate, tropical',
-    gravity: '1 standard',
+    gravity: ONE_STANDARD,
     terrain: 'jungle, rainforests',
     surface_water: '8',
     population: '1000',
     residents: [],
     films: [
-      'https://swapi-trybe.herokuapp.com/api/films/1/',
+      FILMS_ONE,
     ],
     created: '2014-12-10T11:37:19.144000Z',
     edited: '2014-12-20T20:58:18.421000Z',
@@ -86,7 +93,7 @@ const mockAPI = [
     population: 'unknown',
     residents: [],
     films: [
-      'https://swapi-trybe.herokuapp.com/api/films/2/',
+      FILMS_SIX,
     ],
     created: '2014-12-10T11:39:13.934000Z',
     edited: '2014-12-20T20:58:18.423000Z',
@@ -104,9 +111,9 @@ const mockAPI = [
     population: 'unknown',
     residents: [],
     films: [
-      'https://swapi-trybe.herokuapp.com/api/films/2/',
-      'https://swapi-trybe.herokuapp.com/api/films/3/',
-      'https://swapi-trybe.herokuapp.com/api/films/6/',
+      FILMS_SIX,
+      FILMS_TWO,
+      FILMS_FIVE,
     ],
     created: '2014-12-10T11:42:22.590000Z',
     edited: '2014-12-20T20:58:18.425000Z',
@@ -126,7 +133,7 @@ const mockAPI = [
       'https://swapi-trybe.herokuapp.com/api/people/26/',
     ],
     films: [
-      'https://swapi-trybe.herokuapp.com/api/films/2/',
+      FILMS_SIX,
     ],
     created: '2014-12-10T11:43:55.240000Z',
     edited: '2014-12-20T20:58:18.427000Z',
@@ -146,7 +153,7 @@ const mockAPI = [
       'https://swapi-trybe.herokuapp.com/api/people/30/',
     ],
     films: [
-      'https://swapi-trybe.herokuapp.com/api/films/3/',
+      FILMS_TWO,
     ],
     created: '2014-12-10T11:50:29.349000Z',
     edited: '2014-12-20T20:58:18.429000Z',
@@ -158,7 +165,7 @@ const mockAPI = [
     orbital_period: '312',
     diameter: '12120',
     climate: 'temperate',
-    gravity: '1 standard',
+    gravity: ONE_STANDARD,
     terrain: 'grassy hills, swamps, forests, mountains',
     surface_water: '12',
     population: '4500000000',
@@ -176,10 +183,10 @@ const mockAPI = [
       'https://swapi-trybe.herokuapp.com/api/people/66/',
     ],
     films: [
-      'https://swapi-trybe.herokuapp.com/api/films/3/',
-      'https://swapi-trybe.herokuapp.com/api/films/4/',
-      'https://swapi-trybe.herokuapp.com/api/films/5/',
-      'https://swapi-trybe.herokuapp.com/api/films/6/',
+      FILMS_TWO,
+      FILMS_THREE,
+      FILMS_FOUR,
+      FILMS_FIVE,
     ],
     created: '2014-12-10T11:52:31.066000Z',
     edited: '2014-12-20T20:58:18.430000Z',
@@ -191,7 +198,7 @@ const mockAPI = [
     orbital_period: '368',
     diameter: '12240',
     climate: 'temperate',
-    gravity: '1 standard',
+    gravity: ONE_STANDARD,
     terrain: 'cityscape, mountains',
     surface_water: 'unknown',
     population: '1000000000000',
@@ -201,10 +208,10 @@ const mockAPI = [
       'https://swapi-trybe.herokuapp.com/api/people/74/',
     ],
     films: [
-      'https://swapi-trybe.herokuapp.com/api/films/3/',
-      'https://swapi-trybe.herokuapp.com/api/films/4/',
-      'https://swapi-trybe.herokuapp.com/api/films/5/',
-      'https://swapi-trybe.herokuapp.com/api/films/6/',
+      FILMS_TWO,
+      FILMS_THREE,
+      FILMS_FOUR,
+      FILMS_FIVE,
     ],
     created: '2014-12-10T11:54:13.921000Z',
     edited: '2014-12-20T20:58:18.432000Z',
@@ -216,7 +223,7 @@ const mockAPI = [
     orbital_period: '463',
     diameter: '19720',
     climate: 'temperate',
-    gravity: '1 standard',
+    gravity: ONE_STANDARD,
     terrain: 'ocean',
     surface_water: '100',
     population: '1000000000',
@@ -226,7 +233,7 @@ const mockAPI = [
       'https://swapi-trybe.herokuapp.com/api/people/73/',
     ],
     films: [
-      'https://swapi-trybe.herokuapp.com/api/films/5/',
+      FILMS_FOUR,
     ],
     created: '2014-12-10T12:45:06.577000Z',
     edited: '2014-12-20T20:58:18.434000Z',

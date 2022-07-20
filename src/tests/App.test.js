@@ -1,126 +1,120 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import App from '../App';
+import mockAPI from '../mocks/mockAPI';
 import userEvent from '@testing-library/user-event';
 
 
 describe('Testes da aplicação StarWars', () => {
-
   test('Verifica se há um input de pesquisa por nome na tela', () => {
     render(<App />);
-    const inputName = screen.getByTestId(/name-filter/i);
+    const inputName = screen.getByTestId('name-filter');
     expect(inputName).toBeInTheDocument();
   });
-  
+
   test('Verifica se há um dropdown pesquisando por "coluna" na tela', () => {
     render(<App />);
-    const inputColumn = screen.getByTestId(/column-filter/i);
+    const inputColumn = screen.getByTestId('column-filter');
     expect(inputColumn).toBeInTheDocument();
   });
 
   test('Verifica se há um dropdown pesquisando por "comparação" na tela', () => {
     render(<App />);
-    const inputComparison = screen.getByTestId(/comparison-filter/i);
+    const inputComparison = screen.getByTestId('comparison-filter');
     expect(inputComparison).toBeInTheDocument();
   });
 
   test('Verifica se há um dropdown pesquisando por valor didigitado na tela', () => {
     render(<App />);
-    const inputValue = screen.getByTestId(/value-filter/i);
+    const inputValue = screen.getByTestId('value-filter');
     expect(inputValue).toBeInTheDocument();
   });
-  
-  test('Verifica se há um botão "Filtar" na tela', () => {
+
+  test('Verifica se há um botão "Filtrar" na tela', () => {
     render(<App />);
-    const buttonFilter = screen.getByTestId(/button-filter/i);
+    const buttonFilter = screen.getByTestId('button-filter');
     expect(buttonFilter).toBeInTheDocument();
   });
 
   test('Verifica se o primeiro planeta da Tabela é "Tatooine"', async () => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: jest.fn().mockResolvedValue({ results: mockAPI }),
+    });
+
     render(<App />);
     const firstPlanet = await screen.findByText('Tatooine');
     expect(firstPlanet).toBeInTheDocument();
 });
 
-test('Verifica se a lista é filtrada ao digitar no input de pesquisa por nome', async () => {
+test('Verifica a filtragem das options de coluna, comparação e valor digitado', async () => {
+  jest.spyOn(global, 'fetch').mockResolvedValue({
+    json: jest.fn().mockResolvedValue({ results: mockAPI }),
+  });
+
   render(<App />);
-  const inputName = screen.getByTestId(/name-filter/i);
-  userEvent.type(inputName, 'oo');
-  const teste1 = await screen.findByText(/tatooine/i);
-  const teste2 = await screen.findByText(/naboo/i);
-  expect(teste1).toBeInTheDocument();
-  expect(teste2).toBeInTheDocument();
-});
 
-test('Verifica os valores iniciais dos filtros', () => {
-  render(<App />);
-  const population = screen.getByText('population');
-  const greaterThan = screen.getByText('maior que');
-  expect(population).toBeInTheDocument();
-  expect(greaterThan).toBeInTheDocument();
-});
+  const inputName = screen.getByTestId('name-filter');
+  const inputColumn = screen.getByTestId('column-filter');
+  const inputComparison = screen.getByTestId('comparison-filter');
+  const inputValue = screen.getByTestId('value-filter');
+  const buttonFilter = screen.getByTestId('button-filter');
 
- test('Verifica se o filtro "comparison" tem a opção "Maior que"', async () => {
-  render(<App />);
-  const inputColumn = screen.getByTestId(/column-filter/i)
-  const option1 = screen.getByRole('option', { name: 'diameter' })
-  userEvent.selectOptions(inputColumn, option1)
+  // encontra na tela os planetas da tabela sem filtragem
+  const planet1 = await screen.findByText('Tatooine');
+  const planet2 = await screen.findByText('Naboo');
+  const planet3 = await screen.findByText('Dagobah');
 
-  const inputComparison1 = screen.getByTestId(/comparison-filter/i)
-  const greaterThan = screen.getByRole('option', { name: 'maior que' })
-  userEvent.selectOptions(inputComparison1, greaterThan)
+  // testa a filtragem por nome
+  userEvent.type(inputName, 'oo')
 
-  const inputValue = screen.getByTestId(/value-filter/i);
-  const buttonFilter = screen.getByRole('button', {  name: /filtrar/i})
-  expect(inputValue).toHaveAttribute("type", "number");
-  userEvent.type(inputValue, "20000");
+  expect(planet1).toBeInTheDocument();
+  expect(planet2).toBeInTheDocument();
+  expect(planet3).not.toBeInTheDocument();
+
+  expect(screen.getAllByRole('row').length).toBe(3);
+
+  userEvent.clear(inputName);
+
+  // testa a filtragem por opções de coluna, comparação de valores e valor digitado
+  userEvent.selectOptions(inputColumn, ['orbital_period']);
+  userEvent.selectOptions(inputComparison, ['menor que']);
+  userEvent.clear(inputValue);
+  userEvent.type(inputValue, '400');
   userEvent.click(buttonFilter);
- 
-  const response = await screen.findAllByRole('cell');
-  expect(response).toHaveLength(130);  
+
+  const planet4 = await screen.findByText('Dagobah')
+  expect(planet4).toBeInTheDocument();
+
+  expect(screen.getAllByRole('row').length).toBe(6);
 });
 
-test('Verifica se o filtro "comparison" tem a opção "Menor que"', async () => {
-  render(<App />);
-  const inputColumn = screen.getByTestId(/column-filter/i)
-  const option1 = screen.getByRole('option', { name: 'diameter' })
-  userEvent.selectOptions(inputColumn, option1)
+test('Verifica a filtragem das options de coluna por ordenação Ascendente ou Descendente', async () => {
+  jest.spyOn(global, 'fetch').mockResolvedValue({
+    json: jest.fn().mockResolvedValue({ results: mockAPI }),
+  });
 
-  const inputComparison1 = screen.getByTestId(/comparison-filter/i)
-  const greaterThan = screen.getByRole('option', { name: 'menor que' })
-  userEvent.selectOptions(inputComparison1, greaterThan)
+  render(<App />)
 
-  const inputValue = screen.getByTestId(/value-filter/i);
-  const buttonFilter = screen.getByRole('button', {  name: /filtrar/i})
-  expect(inputValue).toHaveAttribute("type", "number");
-  userEvent.type(inputValue, "20000");
-  userEvent.click(buttonFilter);
- 
-  const response = await screen.findAllByRole('cell');
-  expect(response).toHaveLength(130);
-});
+  const inputColumn = screen.getByTestId('column-sort');
+  const radioASC = screen.getByTestId('column-sort-input-asc');
+  const radioDESC = screen.getByTestId('column-sort-input-desc');
+  const buttonSort = screen.getByTestId('column-sort-button');
 
-test('Verifica se o filtro "comparison" tem a opção "Igual a"', async () => {
-  render(<App />);
-  const inputColumn = screen.getByTestId(/column-filter/i)
-  const option1 = screen.getByRole('option', { name: 'diameter' })
-  userEvent.selectOptions(inputColumn, option1)
+  // testa as opções de filtragem Ascendente
+  userEvent.selectOptions(inputColumn, ['orbital_period']);
+  userEvent.click(radioASC);
+  userEvent.click(buttonSort);
 
-  const inputComparison1 = screen.getByTestId(/comparison-filter/i)
-  const greaterThan = screen.getByRole('option', { name: 'igual a' })
-  userEvent.selectOptions(inputComparison1, greaterThan)
+  const planetAsc = await screen.findByText('Tatooine')
+  expect(planetAsc).toBeInTheDocument();
 
-  const inputValue = screen.getByTestId(/value-filter/i);
-  const buttonFilter = screen.getByRole('button', {  name: /filtrar/i})
-  expect(inputValue).toHaveAttribute("type", "number");
-  userEvent.type(inputValue, "20000");
-  userEvent.click(buttonFilter);
- 
-  const response = await screen.findAllByRole('cell');
-  expect(response).toHaveLength(130);
-});
+// testa as opções de filtragem Descendente
+  userEvent.selectOptions(inputColumn, ['population']);
+  userEvent.click(radioDESC);
+  userEvent.click(buttonSort);
 
-});
-
-// fonte: https://github.com/testing-library/user-event/issues/358
-
+  const planetDesc = await screen.findByText('Coruscant')
+  expect(planetDesc).toBeInTheDocument();
+})
+  // fonte: https://github.com/testing-library/user-event/issues/358
+})

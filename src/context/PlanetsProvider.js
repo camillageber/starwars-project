@@ -39,6 +39,12 @@ function PlanetsProvider({ children }) {
     const cloneResult = dataApi.results;
     setDataPlanets(result);
     setCloneData(cloneResult);
+    const SORT = -1;
+    setCloneData(result.sort((a, b) => {
+      if (a.name > b.name) return 1;
+      if (a.name < b.name) return SORT;
+      return 0;
+    }));
   };
 
   useEffect(() => {

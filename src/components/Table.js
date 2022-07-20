@@ -26,8 +26,8 @@ function Table() {
         </thead>
         <tbody>
           {
-            cloneData.map((planet) => (
-              <tr key={ planet.name }>
+            cloneData.map((planet, index) => (
+              <tr key={ index }>
                 <td data-testid="planet-name">{planet.name}</td>
                 <td>{planet.rotation_period}</td>
                 <td>{planet.orbital_period}</td>

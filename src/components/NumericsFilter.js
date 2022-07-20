@@ -15,19 +15,6 @@ function NumericsFilter() {
 
   const comparisonArray = ['maior que', 'menor que', 'igual a'];
 
-  // const handleFilterChange = ({ target }) => {
-  //   switch (target.name) {
-  //   case ('filterOptions'):
-  //     return setColumn1(target.value);
-  //   case ('comparisonFilter'):
-  //     return setComparison(target.value);
-  //   case ('value-filter'):
-  //     return setNumericValue(target.value);
-  //   default:
-  //     return console.log('error!');
-  //   }
-  // };
-
   const handleFilterChange = ({ target }) => {
     switch (target.name) {
     case ('filterOptions'):
@@ -58,11 +45,6 @@ function NumericsFilter() {
           .filter((planet) => Number(planet[obj.column1]) < Number(obj.numericValue));
         break;
       }
-      // case (comparisonArray[2]): {
-      //   response = response
-      //     .filter((planet) => Number(planet[obj.column1]) === Number(obj.numericValue));
-      //   break;
-      // }
       default:
         response = response
           .filter((planet) => Number(planet[obj.column1]) === Number(obj.numericValue));
@@ -91,7 +73,7 @@ function NumericsFilter() {
   // ajuda para construir o requisito 6 do colega Carlos Daniel na sala de estudos.
   useEffect(() => {
     handleFilterClick();
-    console.log('olá');
+    // console.log('olá');
   }, [filterByNumericsValues]);
 
   const handleSortClick = () => {

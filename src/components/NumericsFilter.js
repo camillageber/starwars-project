@@ -3,6 +3,14 @@ import PlanetsContext from '../context/PlanetsContext';
 
 function NumericsFilter() {
   const { setCloneData, data, cloneData } = useContext(PlanetsContext);
+
+  const optionsArray = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
+  const comparisonArray = ['maior que', 'menor que', 'igual a'];
+
+  const [doneFilters, setDoneFilters] = useState([]);
+  const [options, setOptions] = useState(optionsArray);
+  const [sorted] = useState(optionsArray);
   const [column1, setColumn1] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [numericValue, setNumericValue] = useState(0);
@@ -12,8 +20,6 @@ function NumericsFilter() {
     column: 'population',
     sort: 'ASC',
   });
-
-  const comparisonArray = ['maior que', 'menor que', 'igual a'];
 
   const handleFilterChange = ({ target }) => {
     switch (target.name) {
@@ -25,11 +31,6 @@ function NumericsFilter() {
       return setNumericValue(target.value);
     }
   };
-  const optionsArray = [
-    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water'];
-
-  const [options, setOptions] = useState(optionsArray);
-  const [sorted] = useState(optionsArray);
 
   const handleFilterClick = () => {
     let response = [...data];
@@ -67,10 +68,10 @@ function NumericsFilter() {
       comparison,
       numericValue,
     };
+    setDoneFilters([...doneFilters, objFilter.column1]);
     setFilterByNumericsValues([...filterByNumericsValues, objFilter]);
   };
-  // ajuda para resolver o requisito 4 do André Horman na sala da monitoria
-  // ajuda para construir o requisito 6 do colega Carlos Daniel na sala de estudos.
+
   useEffect(() => {
     handleFilterClick();
     // console.log('olá');
@@ -119,6 +120,23 @@ function NumericsFilter() {
     });
   };
 
+  const filterTrash = (name) => {
+    const numericValuesFiltered = filterByNumericsValues.filter(
+      (filter) => filter.column1 !== name,
+    );
+    const removeDoneFilter = doneFilters.filter((filter) => filter !== name);
+    setDoneFilters(removeDoneFilter);
+    setOptions([...options, name]);
+    setFilterByNumericsValues(numericValuesFiltered);
+  };
+
+  const filterTrashAll = () => {
+    setDoneFilters([]);
+    setOptions([
+      'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water']);
+    setFilterByNumericsValues([]);
+  };
+
   return (
     <div>
       <select
@@ -156,6 +174,23 @@ function NumericsFilter() {
       >
         FILTRAR
       </button>
+      <div>
+        {
+          doneFilters.map((filter, index) => (
+            <div key={ index } data-testid="filter">
+              <span>{filter}</span>
+              <button type="button" onClick={ () => filterTrash(filter) }>X</button>
+            </div>
+          ))
+        }
+        <button
+          type="button"
+          data-testid="button-remove-filters"
+          onClick={ filterTrashAll }
+        >
+          Remover Filtragens
+        </button>
+      </div>
       <label htmlFor="ordenar">
         Ordenar
         <select

@@ -117,7 +117,7 @@ test('Verifica a filtragem das options de coluna por ordenação Ascendente ou D
   expect(planetDesc).toBeInTheDocument();
 })
 
-test('Verifica a filtragem 2', async () => {
+test('Verifica a filtragem dos primeiros filtros em conjunto com o de ordenação Ascendente', async () => {
   jest.spyOn(global, 'fetch').mockResolvedValue({
     json: jest.fn().mockResolvedValue({ results: mockAPI }),
   });
@@ -156,7 +156,7 @@ test('Verifica a filtragem 2', async () => {
 
 })
 
-test('Verifica a filtragem 3', async () => {
+test('Verifica a filtragem dos primeiros filtros em conjunto com o de ordenação Descendente', async () => {
   jest.spyOn(global, 'fetch').mockResolvedValue({
     json: jest.fn().mockResolvedValue({ results: mockAPI }),
   });
@@ -194,4 +194,62 @@ test('Verifica a filtragem 3', async () => {
   expect(screen.getAllByRole('row').length).toBe(11);
 })
   // fonte: https://github.com/testing-library/user-event/issues/358
+
+  test('Verifica se há um botão "Remover Filtragens" na tela', () => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: jest.fn().mockResolvedValue({ results: mockAPI }),
+    });
+  
+    render(<App />)
+    const btnRemoveAll = screen.getByTestId('button-remove-filters');
+    expect(btnRemoveAll).toBeInTheDocument();
+
+  })
+
+  test('Verifica botões de remover filtros individuais', async () => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: jest.fn().mockResolvedValue({ results: mockAPI }),
+    });
+  
+    render(<App />)
+  const inputColumn = await screen.findByTestId('column-filter');
+  const inputComparison = screen.getByTestId('comparison-filter');
+  const inputValue = screen.getByTestId('value-filter');
+  const buttonFilter = screen.getByTestId('button-filter');
+
+  userEvent.selectOptions(inputColumn, ['population']);
+  userEvent.selectOptions(inputComparison, ['maior que']);
+  userEvent.type(inputValue, '2000000');
+  userEvent.click(buttonFilter);
+  expect(screen.getAllByRole('row').length).toBe(7)
+
+  const btnRemove = screen.getByRole('button', {  name: /x/i})
+  userEvent.click(btnRemove);
+  const allPlanets = await screen.findAllByRole('cell'); // all planets
+  expect(allPlanets).toHaveLength(130);
+})
+
+test('Verifica botão de apagar todos filtros', async () => {
+  jest.spyOn(global, 'fetch').mockResolvedValue({
+    json: jest.fn().mockResolvedValue({ results: mockAPI }),
+  });
+  render(<App />);
+  
+const inputColumn = screen.getByTestId('column-filter');
+const inputComparison = screen.getByTestId('comparison-filter');
+const inputValue = screen.getByTestId('value-filter');
+const buttonFilter = screen.getByTestId('button-filter');
+
+userEvent.selectOptions(inputColumn, ['diameter']);
+userEvent.selectOptions(inputComparison, ['igual a']);
+userEvent.clear(inputValue);
+userEvent.type(inputValue, '12500');
+
+userEvent.click(buttonFilter);
+
+expect(screen.getAllByRole('row').length).toBe(1)
+const btnRemoveAll = screen.getByTestId('button-remove-filters');
+
+userEvent.click(btnRemoveAll);
+})
 })
